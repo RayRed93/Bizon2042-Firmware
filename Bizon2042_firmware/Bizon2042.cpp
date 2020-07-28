@@ -42,7 +42,6 @@ void Bizon2042Class::LcdBuffer_Active()
 	dtostrf(this->processedArea, 6, 3, areaLcd);
 	areaLcd[5] = '\0';
 	
-
 	snprintf(lcdBuff[LCD_LINE_1], LCD_BUFF_WIDTH, "%s  t=%s", currentTime.TimeToStr(), workTime.TimeToStr());
 	snprintf(lcdBuff[LCD_LINE_2], LCD_BUFF_WIDTH, "d=%skm  v=%2dkm/h", allDistLcd, this->speed);
 	snprintf(lcdBuff[LCD_LINE_3], LCD_BUFF_WIDTH, "P=%sha", areaLcd);
@@ -158,7 +157,7 @@ void Bizon2042Class::HeaderChanged()
 		{
 			ChangeRecordingState(MeasureState::STARTED);
 			memset(status, 0, sizeof status);
-			strcpy(status, "<START>");
+			strcpy(status, "<RUNNING>");
 			SetLed(GREEN_LED, HIGH);
 			//todo back to ChangeRecordingState????
 		}
@@ -192,7 +191,7 @@ void Bizon2042Class::FastUpdate()
 			ResetMeasure();
 			ClearBuff('\0');
 			this->ChangeRecordingState(MeasureState::STARTED);
-			Serial.println("<START>");
+			Serial.println("<RUNNING>");
 	
 			this->startTime = this->currentTime;
 			Serial.println(startTime.TimeToStr());
@@ -200,7 +199,7 @@ void Bizon2042Class::FastUpdate()
 
 			SetLed(GREEN_LED, HIGH);
 			memset(status, 0, sizeof status);
-			strcpy(status, "<START>");
+			strcpy(status, "<RUNNING>");
 			//currentScreen = this->LcdBuffer_Active;
 			
 			
@@ -227,7 +226,7 @@ void Bizon2042Class::FastUpdate()
 		
 			Serial.println("<CONTINUE>");
 			memset(status, 0, sizeof status);
-			strcpy(status, "<START>");
+			strcpy(status, "<RUNNING>");
 			return;
 		}
 	}
@@ -430,6 +429,10 @@ void Bizon2042Class::LoadFromEEPROM()
 void Bizon2042Class::SaveToEEPROM()
 {
 	noInterrupts();
+	for (int i = 0; i < 300; i++) //clear first bytes of eeprom 
+	{
+		EEPROM.write(i, 0);
+	}
 	int addr = 0;
 	EEPROM.put<int>(addr, (int)this->allWheelTicks);
 	addr += sizeof(int);

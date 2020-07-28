@@ -80,13 +80,10 @@ void setup()
 	attachInterrupt(digitalPinToInterrupt(HALL_WHEEL), &WheelTick, RISING);
 	
 	lcd.setCursor(1, 1);
-	lcd.printstr("Bizon System v1.04");
+	lcd.printstr("Bizon 2077 v1.05");
 	lcd.setCursor(0, 3);
 	lcd.printstr("Loading...");
 
-
-	
-	
 	delay(300);
 	bizon.SetLed(RED_LED, HIGH);
 	delay(300);
@@ -112,32 +109,8 @@ void setup()
 
 		delay(5000);
 	}
-
-	
-	//DateTime diff = DateTime::TimeDiffrence(time1, time2);
-	//lcd.print(diff.TimeToStr());
-	//Serial.print(time1.hour+"_");
-	/*Serial.print(time1.second);
-	Serial.println();
-	Serial.print(time1.minute);
-	Serial.println();
-	Serial.print(time1.hour);
-	Serial.println(time1.TimeToStr());*/
-	//Serial.print(time1.second+"_");
-	//Serial.println("READY 1");
 	memset(empty, ' ', 20);
 	delay(100);
-	//Timer1.initialize();
-	//Timer1.attachInterrupt(&FastUpdate,200000);
-	//Timer3.initialize(400000);
-	//Timer1.attachInterrupt(&BizonUpdateCallback, 400000);
-
-	//rtc.set(0, 11, 15, 7, 7, 7, 19);
-
-	//sprintf(bizon.lcdBuff[1], "TEST");
-
-	
-	//Serial.println("READY 2");
 }
 
 void SetTimeFromSerial()
